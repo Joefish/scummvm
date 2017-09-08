@@ -1481,10 +1481,6 @@ void ArsanoEntrance::animation() {
 
 bool ArsanoEntrance::interact(Action verb, Object &obj1, Object &obj2) {
 	// TODO: Refactor row/dialog data structure for dialog()
-	byte zeilen1[5] = {1, 1, 1, 1, 1};
-	byte zeilen2[5] = {1, 1, 1, 1, 1};
-	byte zeilen3[2] = {1, 1};
-
 	char e;
 
 	if ((verb == ACTION_TALK) && (obj1._id == PORTER)) {
@@ -1550,7 +1546,7 @@ bool ArsanoEntrance::interact(Action verb, Object &obj1, Object &obj2) {
 				else
 					_gm->reply("Was f\204llt ihnen ein!|Sie k\224nnen doch ein Lokal|nicht mit Schuhen betreten!", 1, _gm->invertSection(1));
 				e = 0;
-				while ((e < 3) && (_shown[kMaxSection - 1] != 15)) {
+				while ((e < 3) /*&& (_shown[kMaxSection - 1] != 15)*/) { // FIXME: Test with Boolean _shown is always true... Remove or fix?
 					switch (e = _gm->dialog(5, nullptr, nullptr, 1)) { // row1, dialog1
 					case 0:
 						_gm->reply("Fragen Sie nicht so doof!", 1, 1 + 128);
@@ -1868,8 +1864,6 @@ void ArsanoRoger::animation() {
 }
 
 bool ArsanoRoger::interact(Action verb, Object &obj1, Object &obj2) {
-	byte zeilen1[4] = {1, 1, 1, 1};
-
 	if ((verb == ACTION_TAKE) && (obj1._id == WALLET)) {
 		if (isSectionVisible(3)) {
 			_gm->great(0);
@@ -2040,25 +2034,28 @@ bool ArsanoGlider::interact(Action verb, Object &obj1, Object &obj2) {
 }
 
 void ArsanoMeetup2::onEntrance() {
+#if 0
+	// FIXME: _gm->_guienabled is a boolean and thus switch is not required and generates warnings
 	switch (!_gm->_guiEnabled) {
 	case 1:
 		_gm->shipStart();
 		break;
+	// FIXME: Due to boolean, case 2 & 3 are dead code never reached...
 	case 2:
 		_vm->renderMessage("Alle Raumschiffe haben|den Planeten verlassen.");
 		break;
 	case 3:
 		_vm->renderMessage("Alle Raumschiffe haben den Planeten|verlassen, bis auf eins ...");
 	}
+#else
+	if (!_gm->_guiEnabled) {
+		_gm->shipStart();
+	}
+#endif
 	_gm->_guiEnabled = true;
 }
 
 bool ArsanoMeetup2::interact(Action verb, Object &obj1, Object &obj2) {
-	byte zeilen1[2] = {1, 1};
-	byte zeilen2[2] = {1, 1};
-	byte zeilen3[4] = {1, 1, 1, 1};
-	byte zeilen4[2] = {2, 1};
-
 	bool found, flight;
 
 	if (((verb == ACTION_WALK) &&
@@ -2157,9 +2154,6 @@ bool ArsanoMeetup2::interact(Action verb, Object &obj1, Object &obj2) {
 }
 
 bool ArsanoMeetup3::interact(Action verb, Object &obj1, Object &obj2) {
-	byte zeilen2[4] = {1, 1, 1, 1};
-	byte zeilen3[2] = {1, 1};
-
 	if ((verb == ACTION_WALK) && (obj1._id == STAR))
 		_vm->renderMessage("Unsinn!");
 	else if ((verb == ACTION_LOOK) && (obj1._id == STAR)) {
@@ -2237,7 +2231,7 @@ bool ArsanoMeetup3::interact(Action verb, Object &obj1, Object &obj2) {
 				_gm->reply("Ohne diesen Eingriff w\204ren|Sie verloren gewesen.", 1, 1 + 128);
 			}
 			_gm->removeSentence(2, 2);
-		} while (_shown[kMaxSection - 2] != 15);
+		} while (true/*_shown[kMaxSection - 2] != 15*/); // FIXME: Test with Boolean _shown is always true... Remove or fix?
 		_gm->say("Ich habe keine weiteren Fragen mehr.");
 		_gm->reply("Gut, dann versetzen wir Sie jetzt in Tiefschlaf.", 1, 1 + 128);
 		_gm->reply("Gute Nacht!", 1, 1 + 128);
