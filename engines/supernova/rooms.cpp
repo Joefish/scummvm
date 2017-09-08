@@ -1481,10 +1481,6 @@ void ArsanoEntrance::animation() {
 
 bool ArsanoEntrance::interact(Action verb, Object &obj1, Object &obj2) {
 	// TODO: Refactor row/dialog data structure for dialog()
-	byte zeilen1[5] = {1, 1, 1, 1, 1};
-	byte zeilen2[5] = {1, 1, 1, 1, 1};
-	byte zeilen3[2] = {1, 1};
-
 	char e;
 
 	if ((verb == ACTION_TALK) && (obj1._id == PORTER)) {
@@ -1868,8 +1864,6 @@ void ArsanoRoger::animation() {
 }
 
 bool ArsanoRoger::interact(Action verb, Object &obj1, Object &obj2) {
-	byte zeilen1[4] = {1, 1, 1, 1};
-
 	if ((verb == ACTION_TAKE) && (obj1._id == WALLET)) {
 		if (isSectionVisible(3)) {
 			_gm->great(0);
@@ -2054,11 +2048,6 @@ void ArsanoMeetup2::onEntrance() {
 }
 
 bool ArsanoMeetup2::interact(Action verb, Object &obj1, Object &obj2) {
-	byte zeilen1[2] = {1, 1};
-	byte zeilen2[2] = {1, 1};
-	byte zeilen3[4] = {1, 1, 1, 1};
-	byte zeilen4[2] = {2, 1};
-
 	bool found, flight;
 
 	if (((verb == ACTION_WALK) &&
@@ -2157,9 +2146,6 @@ bool ArsanoMeetup2::interact(Action verb, Object &obj1, Object &obj2) {
 }
 
 bool ArsanoMeetup3::interact(Action verb, Object &obj1, Object &obj2) {
-	byte zeilen2[4] = {1, 1, 1, 1};
-	byte zeilen3[2] = {1, 1};
-
 	if ((verb == ACTION_WALK) && (obj1._id == STAR))
 		_vm->renderMessage("Unsinn!");
 	else if ((verb == ACTION_LOOK) && (obj1._id == STAR)) {
